@@ -16,16 +16,20 @@ const manageStream = (stream, jobId) => {
 
   return new Promise((resolve, reject) => {
     stream.on('end', () => {
-      resolve();
+      resolve(streamPool[jobId].data);
+      streamPool[jobId] = undefined;
+      jobPool[jobId] = undefined;
     });
     stream.on('error', () => {
+      streamPool[jobId] = undefined;
+      jobPool[jobId] = undefined;
       reject();
     });
   });
 };
 
 const queueJob = (jobId, opts) => {
-  const jobOpts = Object.apply(
+  const jobOpts = Object.assign(
     {
       Image: opts.image,
       AttachStdin: true,
