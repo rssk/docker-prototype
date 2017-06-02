@@ -20,10 +20,10 @@ const manageStream = (stream, jobId) => {
       streamPool[jobId] = undefined;
       jobPool[jobId] = undefined;
     });
-    stream.on('error', () => {
+    stream.on('error', (err) => {
       streamPool[jobId] = undefined;
       jobPool[jobId] = undefined;
-      reject();
+      reject(err);
     });
   });
 };
